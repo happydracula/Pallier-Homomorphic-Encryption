@@ -1,11 +1,14 @@
 import random
 import math
+import gmpy2
+from gmpy2 import mpz,mpq,mpfr,mpc
 def getRandomCoPrime(n):
     while(True):
         r=random.randrange(1,n)
         if(math.gcd(n,r)==1):
             return r
-
+def fRound(x,n):
+    return ((x+(n//2))%n)-(n//2)
 def Lfunc(x,n):
     return (x-1)//n
 first_primes_list = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29,

@@ -40,7 +40,7 @@ class CipherText:
         elif(self.n!=other.n or self.g!=other.g):
             raise Exception("You can only add  ciphertexts encrypted by same key!!")
         else:
-            return CipherText(gmpy2.mul(self.c,utils.modInverse(other.c,self.n**2))%(self.n**2),self.n,self.g)
+            return CipherText(gmpy2.mul(self.c,utils.modInverse(other.c,self.n**2))%self.n**2,self.n,self.g)
 class PrivateKey:
     def __init__(self,n,l,mu):
         self.n=n
@@ -48,7 +48,7 @@ class PrivateKey:
         self.mu=mu
     def decrypt(self,c):
         c=mpz(c)
-        return (utils.Lfunc(pow(c,self.l,self.n**2),self.n)*self.mu)%self.n
+        return utils.fRound((utils.Lfunc(pow(c,self.l,self.n**2),self.n)*self.mu)%self.n,self.n)
 
 class Pallier:
     
@@ -70,11 +70,12 @@ class Pallier:
 if __name__ =="__main__":
     pallier=Pallier(512)
     private_key,public_key=pallier.key_gen()
-    a=50
-    b=100
+    a=-100
+    b=-200
+    print('n:'+str(public_key.n))
     c1=public_key.encrypt(a)
     c2=public_key.encrypt(b)
-    c3=c2-c1
+    c3=c1-c2
    
     print(private_key.decrypt(c1.c))
     print(private_key.decrypt(c2.c))
